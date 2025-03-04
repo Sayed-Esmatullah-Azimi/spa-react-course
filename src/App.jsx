@@ -1,18 +1,35 @@
 import '@mantine/core/styles.css';
-import { Button, Container,  MantineProvider } from "@mantine/core";
+import { Container,  MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import TodoPage from './pages/todo.page';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import PostDetail from './pages/posts/detail.page';
+import PostPage from './pages/post.page';
 const queryClient = new QueryClient()
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <PostPage />,
+  },
+  {
+    path: "/todo",
+    element: <h1>Hello World!</h1>,
+  },
+  {
+    path: "post/:id",
+    element: <PostDetail/>,
+  },
+]);
 function App() {
   return (
-    <MantineProvider>
       <QueryClientProvider client={queryClient}>
-      <Container>
-            <Button fullWidth>Close</Button>
-            <TodoPage /> 
-      </Container>
+        <MantineProvider>
+          <Container>
+        <RouterProvider router={router} >
+                <PostPage /> 
+        </RouterProvider>
+          </Container>
+        </MantineProvider>
       </QueryClientProvider>
-    </MantineProvider>
   );
 }
 

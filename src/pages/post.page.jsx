@@ -1,9 +1,10 @@
-import { Center, LoadingOverlay, Notification, Pagination, Select, Table } from "@mantine/core";
+import { Center, LoadingOverlay, Notification, Pagination, Select, Table, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { getToDo } from "../utility/api";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
-function TodoPage() {
+function PostPage() {
   const [page,setPage] = useState(1);
   const [limit,setLimit] = useState(10);
   const { data, isLoading, isError } = useQuery({
@@ -26,6 +27,9 @@ function TodoPage() {
 
   return (
     <div>
+      <Text size="xl" variant="gradient">
+        Post
+      </Text>
       <Select
         label="Per page"
         placeholder="Select limit"
@@ -43,7 +47,7 @@ function TodoPage() {
           <Table.Tr>
             <Table.Th>ID</Table.Th>
             <Table.Th>Title</Table.Th>
-            <Table.Th>Completed</Table.Th>
+            <Table.Th>Action</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
@@ -51,16 +55,18 @@ function TodoPage() {
             <Table.Tr key={value.id}>
               <Table.Td>{value.id}</Table.Td>
               <Table.Td>{value.title}</Table.Td>
-              <Table.Td>{value.completed ? 'Yes' : 'No'}</Table.Td>
+              <Table.Td>
+                <Link to={`/post/${value.id}`}>more...</Link>
+              </Table.Td>
             </Table.Tr>
           ))}
         </Table.Tbody>
       </Table>
       <Center mt={'lg'}>
-      <Pagination total={200/10} value={page}  onChange={setPage}/>
+      <Pagination total={100/10} value={page}  onChange={setPage}/>
       </Center>
     </div>
   );
 }
 
-export default TodoPage;
+export default PostPage;
