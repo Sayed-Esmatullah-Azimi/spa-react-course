@@ -1,4 +1,4 @@
-import { Center, LoadingOverlay, Notification, Pagination, Select, Table } from "@mantine/core";
+import { Center, LoadingOverlay, Notification, Pagination, Select, Table, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { getToDo } from "../utility/api";
 import { useState } from "react";
@@ -27,7 +27,9 @@ function PostPage() {
 
   return (
     <div>
-      <Link to="/todo">PostPage</Link>
+      <Text size="xl" variant="gradient">
+        Post
+      </Text>
       <Select
         label="Per page"
         placeholder="Select limit"
