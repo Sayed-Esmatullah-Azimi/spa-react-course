@@ -1,18 +1,22 @@
 import { Center, LoadingOverlay, Notification, Pagination, Select, Table, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { getToDo } from "../utility/api";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 function PostPage() {
-  const [page,setPage] = useState(1);
-  const [limit,setLimit] = useState(10);
+  const [searchParams,setSearchParams] = useSearchParams();
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["fetch-todo",page ,limit],
-    queryFn: ()=> getToDo(page ,limit),
+    queryKey: ["fetch-todo",searchParams.get('page') || 1 ,searchParams.get('limit') || 10],
+    queryFn: ()=> getToDo(searchParams.get('page') ||1 ,searchParams.get('limit') || 10),
     keepPreviousData: true,
   });
 
+  const updateQueryParams = (newParams) => {
+    const mergedParams = { ...Object.fromEntries(searchParams), ...newParams };
+    setSearchParams(mergedParams);
+
+  };
+  
   if (isLoading) {
     return <LoadingOverlay visible />;
   }
@@ -33,8 +37,8 @@ function PostPage() {
       <Select
         label="Per page"
         placeholder="Select limit"
-        value={limit.toString()}
-        onChange={(value) => setLimit(parseInt(value, 10))}
+        value={searchParams.get('limit') || 10}
+        onChange={(value) => updateQueryParams({limit: value})}
         data={[
           { value: '10', label: '10' },
           { value: '20', label: '20' },
@@ -63,7 +67,7 @@ function PostPage() {
         </Table.Tbody>
       </Table>
       <Center mt={'lg'}>
-      <Pagination total={100/10} value={page}  onChange={setPage}/>
+      <Pagination onChange={(value) => updateQueryParams({page: value})} total={100 / Number(searchParams.get('limit') || 10)} value={Number(searchParams.get('page') || 1)}  />
       </Center>
     </div>
   );

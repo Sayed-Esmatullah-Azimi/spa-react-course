@@ -18,7 +18,7 @@ function PostDetail() {
     }
   return (
     <div>
-      <Button variant="subtle" onClick={() => {Navigate("/")}}>
+      <Button variant="subtle" onClick={() => {Navigate(-1)}}>
         Go Back
       </Button>
       <h1>{ data?.title}</h1>
