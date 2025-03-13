@@ -1,16 +1,27 @@
-import { Center, LoadingOverlay, Notification, Pagination, Select, Table, Text } from "@mantine/core";
+import { Center, Group, LoadingOverlay, Notification, Pagination, Select, Table, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { getToDo } from "../utility/api";
 import { Link, useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
+import { IconMoon2, IconSun } from "@tabler/icons-react";
 
 function PostPage() {
-  const [searchParams,setSearchParams] = useSearchParams();
+  let [searchParams,setSearchParams] = useSearchParams();
+ useEffect(() => {
+  // localStorage.setItem("token","12345")
+  console.log(localStorage.getItem("token"));
+  
+ })
+
+ const theme = localStorage.getItem("theme") || "light";
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ["fetch-todo",searchParams.get('page') || 1 ,searchParams.get('limit') || 10],
     queryFn: ()=> getToDo(searchParams.get('page') ||1 ,searchParams.get('limit') || 10),
     keepPreviousData: true,
   });
 
+  
   const updateQueryParams = (newParams) => {
     const mergedParams = { ...Object.fromEntries(searchParams), ...newParams };
     setSearchParams(mergedParams);
@@ -31,9 +42,14 @@ function PostPage() {
 
   return (
     <div>
+      <Group position={"apart"} align={"center"} spacing={"sm"} mt={"md"}>
       <Text size="xl" variant="gradient">
         Post
       </Text>
+      {
+        theme === 'light' ? <IconMoon2 onClick={() => localStorage.setItem("theme","dark")}/> : <IconSun onClick={() => localStorage.setItem("theme",'light')}/>
+      }
+      </Group>
       <Select
         label="Per page"
         placeholder="Select limit"

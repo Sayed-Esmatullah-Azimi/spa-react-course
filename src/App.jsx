@@ -1,9 +1,9 @@
-import '@mantine/core/styles.css';
 import { Container,  MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import PostDetail from './pages/posts/detail.page';
 import PostPage from './pages/post.page';
+import '@mantine/core/styles.css';
 const queryClient = new QueryClient()
 const router = createBrowserRouter([
   {
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
 function App() {
   return (
       <QueryClientProvider client={queryClient}>
-        <MantineProvider>
+       <MantineProvider withGlobalStyles withNormalizeCSS theme={{   colorScheme: localStorage.getItem('theme') || 'light'}}   forceColorScheme={localStorage.getItem('theme') || 'light'}>
           <Container>
         <RouterProvider router={router} >
                 <PostPage /> 
